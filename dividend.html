@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台股殖利率計算器 - FinTools 台灣</title>
+<meta name="description" content="免費台股殖利率計算器，輸入股價與股利快速算出現金殖利率，幫助評估存股標的。">
+<link rel="canonical" href="https://fintools-tw.github.io/dividend.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a href="/" class="logo">Fin<span>Tools</span>.tw</a><nav><a href="/dividend.html">殖利率</a><a href="/dca.html">定期定額</a><a href="/mortgage.html">房貸</a><a href="/tax.html">所得稅</a></nav></div></header>
+
+<div class="tool-page">
+<h1>📈 台股殖利率計算器</h1>
+<p class="desc">輸入股票買入價格與年度股利，立即計算現金殖利率。</p>
+
+<div class="form-group"><label>股票買入價（元）</label><input type="number" id="price" placeholder="例：50" step="0.01"></div>
+<div class="form-group"><label>現金股利（元/股）</label><input type="number" id="cashDiv" placeholder="例：2.5" step="0.01"></div>
+<div class="form-group"><label>股票股利（元/股，選填）</label><input type="number" id="stockDiv" placeholder="例：0.5" step="0.01" value="0"></div>
+<button class="btn btn-primary" onclick="calcDiv()" style="width:100%">計算殖利率</button>
+
+<div class="result-box" id="result" style="display:none">
+<h3>計算結果</h3>
+<div id="resultContent"></div>
+</div>
+
+<div class="cta-box">
+<h3>📋 想要系統化追蹤存股？</h3>
+<p>「台股存股追蹤表」Excel 模板，一表管理所有持股的成本、殖利率與損益。</p>
+<a href="https://gumroad.com" class="btn btn-accent" target="_blank">NT$150 立即購買 →</a>
+</div>
+</div>
+
+<footer class="site-footer"><p>© 2025 FinTools.tw ｜ 專為台灣投資人打造的免費理財工具</p></footer>
+
+<script>
+function calcDiv(){
+  const price=parseFloat(document.getElementById('price').value);
+  const cash=parseFloat(document.getElementById('cashDiv').value)||0;
+  const stock=parseFloat(document.getElementById('stockDiv').value)||0;
+  if(!price||price<=0){alert('請輸入有效的股價');return}
+  const cashYield=(cash/price*100);
+  const stockShares=stock/10;
+  const stockValue=stockShares*price;
+  const totalYield=((cash+stockValue)/price*100);
+  let html=`
+    <div class="result-item"><span class="label">現金殖利率</span><span class="value">${cashYield.toFixed(2)}%</span></div>
+    <div class="result-item"><span class="label">現金股利</span><span class="value">${cash.toFixed(2)} 元/股</span></div>`;
+  if(stock>0){
+    html+=`<div class="result-item"><span class="label">股票股利</span><span class="value">${stock.toFixed(2)} 元（約 ${(stockShares*1000).toFixed(0)} 股/張）</span></div>
+    <div class="result-item"><span class="label">含股票之總殖利率</span><span class="value">${totalYield.toFixed(2)}%</span></div>`;
+  }
+  // Rating
+  let rating='';
+  if(cashYield>=7)rating='🔥 非常優秀';
+  else if(cashYield>=5)rating='👍 不錯';
+  else if(cashYield>=3)rating='😐 普通';
+  else rating='⚠️ 偏低';
+  html+=`<div class="result-item"><span class="label">殖利率評等</span><span class="value">${rating}</span></div>`;
+  document.getElementById('resultContent').innerHTML=html;
+  document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>

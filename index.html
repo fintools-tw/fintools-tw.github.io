@@ -1,114 +1,102 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinTools TW — AI 驅動的財經工具評測</title>
-    <meta name="description" content="用 AI 幫你找到最適合的財經工具。選股工具、記帳 App、券商比較、投資分析。">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            min-height: 100vh;
-        }
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 2rem;
-            background: radial-gradient(ellipse at 50% 0%, rgba(234, 179, 8, 0.15) 0%, transparent 60%);
-        }
-        .logo { font-size: 4rem; margin-bottom: 1rem; }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #eab308, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-        .tagline {
-            font-size: 1.2rem;
-            color: #9ca3af;
-            max-width: 500px;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-        .categories {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 3rem;
-        }
-        .cat-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 1.5rem;
-            width: 180px;
-            transition: all 0.3s;
-        }
-        .cat-card:hover {
-            border-color: #eab308;
-            background: rgba(234, 179, 8, 0.08);
-            transform: translateY(-4px);
-        }
-        .cat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-        .cat-title { font-weight: 600; font-size: 0.95rem; }
-        .coming-soon {
-            display: inline-block;
-            background: rgba(234, 179, 8, 0.15);
-            border: 1px solid rgba(234, 179, 8, 0.3);
-            color: #eab308;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #6b7280;
-            font-size: 0.85rem;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FinTools 台灣 - 免費財經計算工具</title>
+<meta name="description" content="免費好用的台灣財經工具：台股殖利率計算、定期定額試算、房貸試算、所得稅試算。專為台灣投資人設計。">
+<meta name="keywords" content="台股,殖利率,定期定額,房貸試算,所得稅,報稅,2025,台灣,理財工具">
+<meta property="og:title" content="FinTools 台灣 - 免費財經計算工具">
+<meta property="og:description" content="專為台灣人設計的免費理財計算工具，讓你的財務決策更聰明。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fintools-tw.github.io">
+<link rel="canonical" href="https://fintools-tw.github.io">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="hero">
-        <div class="logo">💰🤖</div>
-        <h1>FinTools TW</h1>
-        <p class="tagline">
-            用 AI 幫你找到最適合的財經工具。<br>
-            選股工具 · 記帳 App · 券商比較 · 投資分析
-        </p>
-        <div class="categories">
-            <div class="cat-card">
-                <div class="cat-icon">📈</div>
-                <div class="cat-title">選股工具</div>
-            </div>
-            <div class="cat-card">
-                <div class="cat-icon">💳</div>
-                <div class="cat-title">記帳 App</div>
-            </div>
-            <div class="cat-card">
-                <div class="cat-icon">🏦</div>
-                <div class="cat-title">券商比較</div>
-            </div>
-            <div class="cat-card">
-                <div class="cat-icon">🧮</div>
-                <div class="cat-title">投資計算器</div>
-            </div>
-        </div>
-        <div class="coming-soon">🚀 即將上線 — Coming Soon</div>
+
+<header class="site-header">
+<div class="header-inner">
+  <a href="/" class="logo">Fin<span>Tools</span>.tw</a>
+  <nav>
+    <a href="/dividend.html">殖利率</a>
+    <a href="/dca.html">定期定額</a>
+    <a href="/mortgage.html">房貸</a>
+    <a href="/tax.html">所得稅</a>
+  </nav>
+</div>
+</header>
+
+<section class="hero">
+  <h1>🇹🇼 台灣人的免費理財工具箱</h1>
+  <p>簡單好用的線上計算器，幫你做出更聰明的財務決策。100% 免費、無需註冊。</p>
+</section>
+
+<section class="section">
+  <h2 class="section-title">免費工具</h2>
+  <p class="section-sub">點擊任一工具，立即開始試算</p>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>台股殖利率計算器</h3>
+      <p>輸入股價與股利，快速算出現金殖利率，評估存股標的是否值得投資。</p>
+      <a href="/dividend.html" class="btn btn-primary">開始計算</a>
     </div>
-    <footer>
-        © 2026 FinTools TW. All rights reserved.
-    </footer>
+
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3>定期定額投資試算器</h3>
+      <p>模擬每月定期定額投入的長期報酬，看看複利的威力有多驚人。</p>
+      <a href="/dca.html" class="btn btn-primary">開始試算</a>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🏠</div>
+      <h3>房貸試算器</h3>
+      <p>本息均攤 vs 本金均攤，算出每月還款金額、總利息支出。</p>
+      <a href="/mortgage.html" class="btn btn-primary">開始試算</a>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🧾</div>
+      <h3>2025 綜合所得稅試算器</h3>
+      <p>依 2025 年最新稅制，快速試算你的應繳稅額。5月報稅必備！</p>
+      <a href="/tax.html" class="btn btn-primary">開始試算</a>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" style="background:#fff;padding-top:48px;padding-bottom:48px">
+  <h2 class="section-title">📊 進階理財模板</h2>
+  <p class="section-sub">專業 Excel 模板，讓你的理財更有系統</p>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>台股存股追蹤表</h3>
+      <p>追蹤持股成本、現價、殖利率、損益，一表掌握投資全貌。</p>
+      <a href="https://gumroad.com" class="btn btn-accent" target="_blank">NT$150 購買</a>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧮</div>
+      <h3>2025 所得稅試算 Excel</h3>
+      <p>內建最新稅率與公式，輸入收入自動算稅，支援多種扣除方式。</p>
+      <a href="https://gumroad.com" class="btn btn-accent" target="_blank">NT$150 購買</a>
+    </div>
+    <div class="card">
+      <div class="card-icon">📒</div>
+      <h3>家庭記帳模板</h3>
+      <p>月度收支追蹤、分類統計、年度彙總，讓記帳變得輕鬆簡單。</p>
+      <a href="https://gumroad.com" class="btn btn-accent" target="_blank">NT$120 購買</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>© 2025 FinTools.tw ｜ 專為台灣投資人打造的免費理財工具</p>
+  <p style="margin-top:8px">資料僅供參考，投資理財請自行評估風險</p>
+</footer>
+
 </body>
 </html>

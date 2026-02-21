@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>定期定額投資試算器 - FinTools 台灣</title>
+<meta name="description" content="免費定期定額投資試算器，模擬每月定期投入的長期複利報酬，看見時間與複利的威力。">
+<link rel="canonical" href="https://fintools-tw.github.io/dca.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a href="/" class="logo">Fin<span>Tools</span>.tw</a><nav><a href="/dividend.html">殖利率</a><a href="/dca.html">定期定額</a><a href="/mortgage.html">房貸</a><a href="/tax.html">所得稅</a></nav></div></header>
+
+<div class="tool-page">
+<h1>💰 定期定額投資試算器</h1>
+<p class="desc">模擬每月固定投入金額，搭配預期年化報酬率，看看長期下來資產能累積多少。</p>
+
+<div class="form-group"><label>每月投入金額（元）</label><input type="number" id="monthly" placeholder="例：10000" step="1000"></div>
+<div class="form-group"><label>預期年化報酬率（%）</label><input type="number" id="rate" placeholder="例：8" step="0.1" value="8"></div>
+<div class="form-group"><label>投資年數</label><input type="number" id="years" placeholder="例：20" step="1"></div>
+<div class="form-group"><label>初始投入金額（選填）</label><input type="number" id="initial" placeholder="例：100000" value="0"></div>
+<button class="btn btn-primary" onclick="calcDCA()" style="width:100%">開始試算</button>
+
+<div class="result-box" id="result" style="display:none">
+<h3>試算結果</h3>
+<div id="resultContent"></div>
+</div>
+
+<div class="cta-box">
+<h3>📒 想要更完整的記帳系統？</h3>
+<p>「家庭記帳模板」Excel 幫你追蹤每月收支，搭配投資更有效率。</p>
+<a href="https://gumroad.com" class="btn btn-accent" target="_blank">NT$120 立即購買 →</a>
+</div>
+</div>
+
+<footer class="site-footer"><p>© 2025 FinTools.tw ｜ 專為台灣投資人打造的免費理財工具</p></footer>
+
+<script>
+function calcDCA(){
+  const m=parseFloat(document.getElementById('monthly').value);
+  const r=parseFloat(document.getElementById('rate').value)/100;
+  const y=parseInt(document.getElementById('years').value);
+  const init=parseFloat(document.getElementById('initial').value)||0;
+  if(!m||!y){alert('請填入每月金額與投資年數');return}
+  const mr=r/12;const n=y*12;
+  // FV = init*(1+mr)^n + m*((1+mr)^n -1)/mr
+  const compFactor=Math.pow(1+mr,n);
+  const fvInit=init*compFactor;
+  const fvMonthly=mr>0?m*(compFactor-1)/mr:m*n;
+  const total=fvInit+fvMonthly;
+  const totalInvested=init+m*n;
+  const profit=total-totalInvested;
+
+  const fmt=v=>Math.round(v).toLocaleString('zh-TW');
+  document.getElementById('resultContent').innerHTML=`
+    <div class="result-item"><span class="label">最終資產總值</span><span class="value" style="color:#2e7d32;font-size:1.1rem">NT$ ${fmt(total)}</span></div>
+    <div class="result-item"><span class="label">累計投入本金</span><span class="value">NT$ ${fmt(totalInvested)}</span></div>
+    <div class="result-item"><span class="label">投資獲利</span><span class="value" style="color:#1a73e8">NT$ ${fmt(profit)}</span></div>
+    <div class="result-item"><span class="label">總報酬率</span><span class="value">${(profit/totalInvested*100).toFixed(1)}%</span></div>
+    <div class="result-item"><span class="label">投資期間</span><span class="value">${y} 年（${n} 個月）</span></div>
+  `;
+  document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>

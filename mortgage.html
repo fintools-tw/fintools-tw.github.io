@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>房貸試算器 - FinTools 台灣</title>
+<meta name="description" content="免費房貸試算器，支援本息均攤與本金均攤，計算每月還款金額與總利息支出。">
+<link rel="canonical" href="https://fintools-tw.github.io/mortgage.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a href="/" class="logo">Fin<span>Tools</span>.tw</a><nav><a href="/dividend.html">殖利率</a><a href="/dca.html">定期定額</a><a href="/mortgage.html">房貸</a><a href="/tax.html">所得稅</a></nav></div></header>
+
+<div class="tool-page">
+<h1>🏠 房貸試算器</h1>
+<p class="desc">輸入貸款金額、利率與年限，比較本息均攤與本金均攤的差異。</p>
+
+<div class="form-group"><label>貸款金額（萬元）</label><input type="number" id="loan" placeholder="例：1000" step="10"></div>
+<div class="form-group"><label>年利率（%）</label><input type="number" id="rate" placeholder="例：2.1" step="0.01" value="2.1"></div>
+<div class="form-group"><label>貸款年限（年）</label><input type="number" id="years" placeholder="例：30" step="1" value="30"></div>
+<div class="form-group"><label>還款方式</label>
+<select id="method"><option value="equal">本息均攤（等額本息）</option><option value="principal">本金均攤（等額本金）</option></select></div>
+<button class="btn btn-primary" onclick="calcMortgage()" style="width:100%">開始試算</button>
+
+<div class="result-box" id="result" style="display:none">
+<h3>試算結果</h3>
+<div id="resultContent"></div>
+</div>
+
+<div class="cta-box">
+<h3>📒 買房後更需要好好記帳！</h3>
+<p>「家庭記帳模板」幫你管理房貸支出與日常開銷，每月收支一目了然。</p>
+<a href="https://gumroad.com" class="btn btn-accent" target="_blank">NT$120 立即購買 →</a>
+</div>
+</div>
+
+<footer class="site-footer"><p>© 2025 FinTools.tw ｜ 專為台灣投資人打造的免費理財工具</p></footer>
+
+<script>
+function calcMortgage(){
+  const loanW=parseFloat(document.getElementById('loan').value);
+  const r=parseFloat(document.getElementById('rate').value)/100;
+  const y=parseInt(document.getElementById('years').value);
+  const method=document.getElementById('method').value;
+  if(!loanW||!r||!y){alert('請填入所有欄位');return}
+  const loan=loanW*10000;const mr=r/12;const n=y*12;
+  const fmt=v=>Math.round(v).toLocaleString('zh-TW');
+  let html='';
+  if(method==='equal'){
+    const mp=loan*mr*Math.pow(1+mr,n)/(Math.pow(1+mr,n)-1);
+    const total=mp*n;
+    const interest=total-loan;
+    html=`
+      <div class="result-item"><span class="label">每月還款</span><span class="value" style="color:#2e7d32;font-size:1.1rem">NT$ ${fmt(mp)}</span></div>
+      <div class="result-item"><span class="label">總還款金額</span><span class="value">NT$ ${fmt(total)}</span></div>
+      <div class="result-item"><span class="label">總利息支出</span><span class="value" style="color:#d32f2f">NT$ ${fmt(interest)}</span></div>
+      <div class="result-item"><span class="label">貸款本金</span><span class="value">NT$ ${fmt(loan)}</span></div>
+    `;
+  }else{
+    const mp0=loan/n;
+    const first=mp0+loan*mr;
+    const last=mp0+(loan/n)*mr;
+    let totalInterest=0;
+    for(let i=0;i<n;i++) totalInterest+=(loan-mp0*i)*mr;
+    html=`
+      <div class="result-item"><span class="label">首月還款</span><span class="value" style="color:#2e7d32;font-size:1.1rem">NT$ ${fmt(first)}</span></div>
+      <div class="result-item"><span class="label">末月還款</span><span class="value">NT$ ${fmt(last)}</span></div>
+      <div class="result-item"><span class="label">每月遞減約</span><span class="value">NT$ ${fmt(loan*mr/n)}</span></div>
+      <div class="result-item"><span class="label">總利息支出</span><span class="value" style="color:#d32f2f">NT$ ${fmt(totalInterest)}</span></div>
+      <div class="result-item"><span class="label">貸款本金</span><span class="value">NT$ ${fmt(loan)}</span></div>
+    `;
+  }
+  document.getElementById('resultContent').innerHTML=html;
+  document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>
