@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTools TW — AI 驅動的財經工具評測</title>
+    <meta name="description" content="用 AI 幫你找到最適合的財經工具。選股工具、記帳 App、券商比較、投資分析。">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(ellipse at 50% 0%, rgba(234, 179, 8, 0.15) 0%, transparent 60%);
+        }
+        .logo { font-size: 4rem; margin-bottom: 1rem; }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #eab308, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .tagline {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            max-width: 500px;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .categories {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        .cat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 180px;
+            transition: all 0.3s;
+        }
+        .cat-card:hover {
+            border-color: #eab308;
+            background: rgba(234, 179, 8, 0.08);
+            transform: translateY(-4px);
+        }
+        .cat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .cat-title { font-weight: 600; font-size: 0.95rem; }
+        .coming-soon {
+            display: inline-block;
+            background: rgba(234, 179, 8, 0.15);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            color: #eab308;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="logo">💰🤖</div>
+        <h1>FinTools TW</h1>
+        <p class="tagline">
+            用 AI 幫你找到最適合的財經工具。<br>
+            選股工具 · 記帳 App · 券商比較 · 投資分析
+        </p>
+        <div class="categories">
+            <div class="cat-card">
+                <div class="cat-icon">📈</div>
+                <div class="cat-title">選股工具</div>
+            </div>
+            <div class="cat-card">
+                <div class="cat-icon">💳</div>
+                <div class="cat-title">記帳 App</div>
+            </div>
+            <div class="cat-card">
+                <div class="cat-icon">🏦</div>
+                <div class="cat-title">券商比較</div>
+            </div>
+            <div class="cat-card">
+                <div class="cat-icon">🧮</div>
+                <div class="cat-title">投資計算器</div>
+            </div>
+        </div>
+        <div class="coming-soon">🚀 即將上線 — Coming Soon</div>
+    </div>
+    <footer>
+        © 2026 FinTools TW. All rights reserved.
+    </footer>
+</body>
+</html>
