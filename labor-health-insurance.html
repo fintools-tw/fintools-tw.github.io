@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>勞健保費用計算器 2025 - FinTools 台灣</title>
+<meta name="description" content="2025年勞健保費用計算器，輸入月薪自動算出勞保、健保、勞退自付額。上班族必備！">
+<meta name="keywords" content="勞保費用,健保費用,勞健保計算,2025,勞保費率,健保費率,勞退,台灣">
+<meta property="og:title" content="勞健保費用計算器 2025 - FinTools 台灣">
+<meta property="og:description" content="輸入月薪，立即算出每月勞保、健保自付額及雇主負擔。">
+<link rel="canonical" href="https://fintools-tw.github.io/labor-health-insurance.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a href="/" class="logo">Fin<span>Tools</span>.tw</a><nav><a href="/dividend.html">殖利率</a><a href="/dca.html">定期定額</a><a href="/mortgage.html">房貸</a><a href="/tax.html">所得稅</a><a href="/blog/">部落格</a></nav></div></header>
+
+<div class="tool-page">
+<h1>🏥 勞健保費用計算器 2025</h1>
+<p class="desc">輸入月薪，立即算出勞保、健保、勞退每月自付金額。適用 2025 年最新費率。</p>
+
+<div style="background:#e3f2fd;border-radius:8px;padding:16px;margin-bottom:24px;font-size:.9rem">
+  <strong>📌 2025 年費率：</strong>勞保普通事故 12%（含就保 1%）、健保 5.17%、勞退雇主提繳 6%<br>
+  勞保負擔比例：勞工 20%、雇主 70%、政府 10%<br>
+  健保負擔比例：勞工 30%、雇主 60%、政府 10%（眷屬平均 0.61 人）
+</div>
+
+<div class="form-group"><label>每月薪資（元）</label><input type="number" id="salary" placeholder="例：45000"></div>
+<div class="form-group"><label>健保眷屬人數（不含本人）</label><input type="number" id="dependents" value="0" min="0" max="3"></div>
+<div class="form-group"><label>是否自願提繳勞退 6%？</label>
+<select id="voluntaryRetire"><option value="0">否</option><option value="1">是</option></select></div>
+<button class="btn btn-primary" onclick="calc()" style="width:100%">計算費用</button>
+
+<div class="result-box" id="result" style="display:none">
+<h3>計算結果</h3>
+<div id="resultContent"></div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:#fff3e0;border-radius:8px;font-size:.85rem;color:#6b7280">
+<strong>投保薪資級距說明：</strong><br>
+勞保投保薪資上限 45,800 元，下限 27,470 元。<br>
+健保投保薪資上限 219,500 元，下限 27,470 元。<br>
+實際金額依投保薪資級距對應，本計算器採近似值。<br>
+勞退月提繳工資無上限限制（提繳級距上限 150,000 元）。
+</div>
+
+<div class="cta-box">
+<h3>🧾 報稅季必備工具</h3>
+<p>搭配所得稅試算器，完整掌握你的稅務負擔！</p>
+<a href="/tax.html" class="btn btn-accent">前往所得稅試算 →</a>
+</div>
+</div>
+
+<footer class="site-footer"><p>© 2025 FinTools.tw ｜ 專為台灣投資人打造的免費理財工具</p></footer>
+
+<script>
+// 2025 勞保投保薪資級距（簡化版，取主要級距）
+const laborGrades=[27470,28590,30300,31800,33300,34800,36300,38200,40100,42000,43900,45800];
+const healthGrades=[27470,28590,30300,31800,33300,34800,36300,38200,40100,42000,43900,45800,48200,50600,53000,55400,57800,60800,63800,66800,69800,73500,77100,80700,84300,87600,92100,96600,101100,105600,110100,115500,120900,126300,131700,137100,142500,147900,150000,156400,162800,169200,175600,182000,189500,197000,204500,212000,219500];
+const retireGrades=[27470,28590,30300,31800,33300,34800,36300,38200,40100,42000,43900,45800,48200,50600,53000,55400,57800,60800,63800,66800,69800,73500,77100,80700,84300,87600,92100,96600,101100,105600,110100,115500,120900,126300,131700,137100,142500,147900,150000];
+
+function findGrade(salary,grades){
+  for(let i=0;i<grades.length;i++){
+    if(salary<=grades[i]) return grades[i];
+  }
+  return grades[grades.length-1];
+}
+
+function calc(){
+  const salary=parseFloat(document.getElementById('salary').value);
+  if(!salary){alert('請輸入月薪');return}
+  const deps=Math.min(3,parseInt(document.getElementById('dependents').value)||0);
+  const voluntary=parseInt(document.getElementById('voluntaryRetire').value);
+
+  const laborGrade=findGrade(salary,laborGrades);
+  const healthGrade=findGrade(salary,healthGrades);
+  const retireGrade=findGrade(salary,retireGrades);
+
+  // 勞保（含就保）：12% × 投保薪資
+  const laborRate=0.12;
+  const laborSelf=Math.round(laborGrade*laborRate*0.2); // 勞工自付20%
+  const laborEmployer=Math.round(laborGrade*laborRate*0.7);
+
+  // 健保：5.17% × 投保薪資 × (1+眷屬人數) × 負擔比例
+  const healthRate=0.0517;
+  const healthSelf=Math.round(healthGrade*healthRate*(1+deps)*0.3);
+  const healthEmployer=Math.round(healthGrade*healthRate*(1+0.61)*0.6); // 雇主用平均眷口數
+
+  // 勞退（雇主強制6%）
+  const retireEmployer=Math.round(retireGrade*0.06);
+  const retireSelf=voluntary?Math.round(retireGrade*0.06):0;
+
+  const totalSelf=laborSelf+healthSelf+retireSelf;
+  const totalEmployer=laborEmployer+healthEmployer+retireEmployer;
+  const netSalary=Math.round(salary-totalSelf);
+
+  const fmt=v=>Math.round(v).toLocaleString('zh-TW');
+
+  document.getElementById('resultContent').innerHTML=`
+    <div class="result-item"><span class="label">💰 每月自付合計</span><span class="value" style="color:#d32f2f;font-size:1.15rem">NT$ ${fmt(totalSelf)}</span></div>
+    <div class="result-item"><span class="label">勞保自付額</span><span class="value">NT$ ${fmt(laborSelf)}</span></div>
+    <div class="result-item"><span class="label">健保自付額</span><span class="value">NT$ ${fmt(healthSelf)}</span></div>
+    ${voluntary?`<div class="result-item"><span class="label">勞退自提 6%</span><span class="value">NT$ ${fmt(retireSelf)}</span></div>`:''}
+    <div class="result-item"><span class="label">實領薪資（約）</span><span class="value" style="color:#2e7d32">NT$ ${fmt(netSalary)}</span></div>
+    <div style="border-top:2px solid #c8e6c9;margin:12px 0;padding-top:12px"></div>
+    <div class="result-item"><span class="label">🏢 雇主負擔合計</span><span class="value">NT$ ${fmt(totalEmployer)}</span></div>
+    <div class="result-item"><span class="label">雇主勞保</span><span class="value">NT$ ${fmt(laborEmployer)}</span></div>
+    <div class="result-item"><span class="label">雇主健保</span><span class="value">NT$ ${fmt(healthEmployer)}</span></div>
+    <div class="result-item"><span class="label">雇主勞退提繳</span><span class="value">NT$ ${fmt(retireEmployer)}</span></div>
+    <div style="border-top:2px solid #c8e6c9;margin:12px 0;padding-top:12px"></div>
+    <div class="result-item"><span class="label">勞保投保薪資</span><span class="value">NT$ ${fmt(laborGrade)}</span></div>
+    <div class="result-item"><span class="label">健保投保薪資</span><span class="value">NT$ ${fmt(healthGrade)}</span></div>
+    <div class="result-item"><span class="label">勞退月提繳工資</span><span class="value">NT$ ${fmt(retireGrade)}</span></div>
+  `;
+  document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>

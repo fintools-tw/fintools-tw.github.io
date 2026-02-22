@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>綜合所得稅完整試算器 2025 - 含特別扣除額 - FinTools 台灣</title>
+<meta name="description" content="最完整的2025綜合所得稅試算器，支援所有特別扣除額（薪資、身心障礙、教育學費、幼兒學前、長照）及列舉扣除項目，精準計算應繳稅額。">
+<meta name="keywords" content="綜合所得稅,2025報稅,特別扣除額,幼兒學前扣除,長照扣除額,教育學費扣除,所得稅試算,台灣">
+<meta property="og:title" content="綜合所得稅完整試算器 2025 - FinTools 台灣">
+<meta property="og:description" content="支援全部特別扣除額，精準計算2025年應繳稅額。">
+<link rel="canonical" href="https://fintools-tw.github.io/income-tax-detail.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a href="/" class="logo">Fin<span>Tools</span>.tw</a><nav><a href="/dividend.html">殖利率</a><a href="/dca.html">定期定額</a><a href="/mortgage.html">房貸</a><a href="/tax.html">所得稅</a><a href="/blog/">部落格</a></nav></div></header>
+
+<div class="tool-page">
+<h1>🧮 綜合所得稅完整試算器 2025</h1>
+<p class="desc">支援所有特別扣除額（幼兒學前、長照、教育學費、身心障礙），精準計算 2024 年度所得稅（2025 年 5 月申報）。</p>
+
+<div style="background:#e3f2fd;border-radius:8px;padding:16px;margin-bottom:24px;font-size:.9rem">
+  <strong>📌 2024 年度適用：</strong>免稅額 97,000/人（70歲以上 145,500）、標準扣除額 131,000（單身）/ 262,000（夫妻）
+</div>
+
+<h3 style="margin-bottom:12px;font-size:1.05rem">📋 基本資料</h3>
+<div class="form-group"><label>年度綜合所得總額（元）</label><input type="number" id="income" placeholder="例：1200000"></div>
+<div class="form-group"><label>申報方式</label>
+<select id="filing"><option value="single">單身</option><option value="married">夫妻合併</option></select></div>
+
+<h3 style="margin:20px 0 12px;font-size:1.05rem">👨‍👩‍👧‍👦 免稅額</h3>
+<div class="form-group"><label>一般扶養人數（未滿70歲，不含本人/配偶）</label><input type="number" id="depNormal" value="0" min="0"></div>
+<div class="form-group"><label>年滿70歲以上扶養人數</label><input type="number" id="depSenior" value="0" min="0"></div>
+
+<h3 style="margin:20px 0 12px;font-size:1.05rem">📝 扣除額</h3>
+<div class="form-group"><label>扣除方式</label>
+<select id="deductType"><option value="standard">標準扣除額</option><option value="itemized">列舉扣除額</option></select></div>
+<div class="form-group" id="itemizedGroup" style="display:none"><label>列舉扣除額合計（元）</label><input type="number" id="itemized" placeholder="保險費+醫療費+房貸利息+捐贈..."></div>
+
+<h3 style="margin:20px 0 12px;font-size:1.05rem">⭐ 特別扣除額</h3>
+<div class="form-group"><label>有薪資所得人數</label>
+<select id="salaryPersons"><option value="1">1人</option><option value="2">2人</option><option value="0">0人</option></select></div>
+<div class="form-group"><label>身心障礙人數</label><input type="number" id="disability" value="0" min="0"></div>
+<div class="form-group"><label>大專以上子女教育學費人數</label><input type="number" id="education" value="0" min="0"></div>
+<div class="form-group"><label>5歲以下幼兒人數</label><input type="number" id="preschool" value="0" min="0"></div>
+<div class="form-group"><label>長照扣除人數</label><input type="number" id="longterm" value="0" min="0"></div>
+<div class="form-group"><label>儲蓄投資特別扣除額（元，上限27萬）</label><input type="number" id="saving" value="0" placeholder="銀行利息所得"></div>
+
+<button class="btn btn-primary" onclick="calc()" style="width:100%">試算稅額</button>
+
+<div class="result-box" id="result" style="display:none">
+<h3>試算結果</h3>
+<div id="resultContent"></div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:#fff3e0;border-radius:8px;font-size:.85rem;color:#6b7280">
+<strong>2024 年度特別扣除額一覽：</strong><br>
+薪資特別扣除額：218,000/人<br>
+身心障礙特別扣除額：218,000/人<br>
+教育學費特別扣除額：25,000/人<br>
+幼兒學前特別扣除額：150,000/人（2024年度起擴大至6歲以下，第2人起加碼）<br>
+長照特別扣除額：120,000/人<br>
+儲蓄投資特別扣除額：上限 270,000<br><br>
+<strong>稅率級距：</strong>5%→12%→20%→30%→40%
+</div>
+
+<div class="cta-box">
+<h3>📊 有股利收入？</h3>
+<p>用股利所得稅比較器，看合併或分開計稅哪個划算。</p>
+<a href="/dividend-tax.html" class="btn btn-accent">股利計稅比較 →</a>
+</div>
+</div>
+
+<footer class="site-footer"><p>© 2025 FinTools.tw ｜ 專為台灣投資人打造的免費理財工具</p></footer>
+
+<script>
+document.getElementById('deductType').addEventListener('change',function(){
+  document.getElementById('itemizedGroup').style.display=this.value==='itemized'?'block':'none';
+});
+
+const brackets=[
+  {limit:590000,rate:0.05,cumDeduct:0},
+  {limit:1330000,rate:0.12,cumDeduct:41300},
+  {limit:2660000,rate:0.20,cumDeduct:147700},
+  {limit:4980000,rate:0.30,cumDeduct:413700},
+  {limit:Infinity,rate:0.40,cumDeduct:911700}
+];
+
+function calc(){
+  const income=parseFloat(document.getElementById('income').value);
+  if(!income){alert('請輸入所得總額');return}
+
+  const filing=document.getElementById('filing').value;
+  const depNormal=parseInt(document.getElementById('depNormal').value)||0;
+  const depSenior=parseInt(document.getElementById('depSenior').value)||0;
+  const deductType=document.getElementById('deductType').value;
+  const salaryPersons=parseInt(document.getElementById('salaryPersons').value);
+  const disability=parseInt(document.getElementById('disability').value)||0;
+  const education=parseInt(document.getElementById('education').value)||0;
+  const preschool=parseInt(document.getElementById('preschool').value)||0;
+  const longterm=parseInt(document.getElementById('longterm').value)||0;
+  const saving=Math.min(270000, parseFloat(document.getElementById('saving').value)||0);
+
+  // 免稅額
+  const exemptionNormal=97000;
+  const exemptionSenior=145500;
+  let persons=filing==='married'?2:1;
+  const totalExemption=persons*exemptionNormal + depNormal*exemptionNormal + depSenior*exemptionSenior;
+
+  // 一般扣除額
+  let deduction=deductType==='standard'?(filing==='married'?262000:131000):(parseFloat(document.getElementById('itemized').value)||0);
+
+  // 特別扣除額
+  const salaryDed=salaryPersons*218000;
+  const disabilityDed=disability*218000;
+  const educationDed=education*25000;
+  // 幼兒學前：第1人15萬，第2人起加碼（簡化為每人15萬）
+  const preschoolDed=preschool*150000;
+  const longtermDed=longterm*120000;
+  const totalSpecial=salaryDed+disabilityDed+educationDed+preschoolDed+longtermDed+saving;
+
+  const taxableIncome=Math.max(0, income-totalExemption-deduction-totalSpecial);
+
+  let tax=0, appliedRate='';
+  for(const b of brackets){
+    if(taxableIncome<=b.limit){
+      tax=taxableIncome*b.rate-b.cumDeduct;
+      appliedRate=(b.rate*100)+'%';
+      break;
+    }
+  }
+  tax=Math.max(0,Math.round(tax));
+  const effectiveRate=income>0?(tax/income*100).toFixed(2):'0';
+
+  const fmt=v=>Math.round(v).toLocaleString('zh-TW');
+
+  let specialRows='';
+  if(salaryDed) specialRows+=`<div class="result-item"><span class="label">　薪資特別扣除額</span><span class="value">NT$ ${fmt(salaryDed)}</span></div>`;
+  if(disabilityDed) specialRows+=`<div class="result-item"><span class="label">　身心障礙扣除額</span><span class="value">NT$ ${fmt(disabilityDed)}</span></div>`;
+  if(educationDed) specialRows+=`<div class="result-item"><span class="label">　教育學費扣除額</span><span class="value">NT$ ${fmt(educationDed)}</span></div>`;
+  if(preschoolDed) specialRows+=`<div class="result-item"><span class="label">　幼兒學前扣除額</span><span class="value">NT$ ${fmt(preschoolDed)}</span></div>`;
+  if(longtermDed) specialRows+=`<div class="result-item"><span class="label">　長照扣除額</span><span class="value">NT$ ${fmt(longtermDed)}</span></div>`;
+  if(saving) specialRows+=`<div class="result-item"><span class="label">　儲蓄投資扣除額</span><span class="value">NT$ ${fmt(saving)}</span></div>`;
+
+  document.getElementById('resultContent').innerHTML=`
+    <div class="result-item"><span class="label">🧾 應繳稅額</span><span class="value" style="color:#d32f2f;font-size:1.2rem">NT$ ${fmt(tax)}</span></div>
+    <div class="result-item"><span class="label">綜合所得淨額</span><span class="value">NT$ ${fmt(taxableIncome)}</span></div>
+    <div class="result-item"><span class="label">適用最高稅率</span><span class="value">${appliedRate}</span></div>
+    <div class="result-item"><span class="label">有效稅率</span><span class="value">${effectiveRate}%</span></div>
+    <div style="border-top:2px solid #c8e6c9;margin:12px 0;padding-top:12px"></div>
+    <div class="result-item"><span class="label">免稅額合計</span><span class="value">NT$ ${fmt(totalExemption)}（${persons+depNormal+depSenior}人）</span></div>
+    <div class="result-item"><span class="label">一般扣除額</span><span class="value">NT$ ${fmt(deduction)}</span></div>
+    <div class="result-item"><span class="label">特別扣除額合計</span><span class="value">NT$ ${fmt(totalSpecial)}</span></div>
+    ${specialRows}
+    <div style="border-top:2px solid #c8e6c9;margin:12px 0;padding-top:12px"></div>
+    <div class="result-item"><span class="label">總扣除金額</span><span class="value">NT$ ${fmt(totalExemption+deduction+totalSpecial)}</span></div>
+  `;
+  document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>

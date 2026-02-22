@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>房貸利息抵稅計算器 2025 - FinTools 台灣</title>
+<meta name="description" content="房貸利息可以抵稅！輸入房貸餘額與利率，計算每年可列舉扣除的房貸利息，以及實際省下多少稅。">
+<meta name="keywords" content="房貸利息抵稅,列舉扣除額,房貸節稅,自用住宅,報稅,2025,台灣">
+<meta property="og:title" content="房貸利息抵稅計算器 2025 - FinTools 台灣">
+<meta property="og:description" content="計算房貸利息可扣除金額及實際節稅效果。">
+<link rel="canonical" href="https://fintools-tw.github.io/mortgage-tax-deduction.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a href="/" class="logo">Fin<span>Tools</span>.tw</a><nav><a href="/dividend.html">殖利率</a><a href="/dca.html">定期定額</a><a href="/mortgage.html">房貸</a><a href="/tax.html">所得稅</a><a href="/blog/">部落格</a></nav></div></header>
+
+<div class="tool-page">
+<h1>🏠 房貸利息抵稅計算器 2025</h1>
+<p class="desc">自用住宅房貸利息可列舉扣除，每戶上限 30 萬元。輸入你的房貸資訊，看看能省多少稅！</p>
+
+<div style="background:#e3f2fd;border-radius:8px;padding:16px;margin-bottom:24px;font-size:.9rem">
+  <strong>📌 抵稅規定：</strong><br>
+  • 限「自用住宅」購屋借款利息<br>
+  • 須先扣除儲蓄投資特別扣除額（上限 27 萬）<br>
+  • 每戶每年最高可扣除 <b>30 萬元</b><br>
+  • 須選擇「列舉扣除額」才能使用（非標準扣除額）
+</div>
+
+<div class="form-group"><label>房貸餘額（元）</label><input type="number" id="loanBalance" placeholder="例：5000000"></div>
+<div class="form-group"><label>年利率（%）</label><input type="number" id="rate" placeholder="例：2.1" step="0.01"></div>
+<div class="form-group"><label>儲蓄投資特別扣除額已使用金額（元）</label><input type="number" id="savingDeduct" value="0" placeholder="銀行利息所得，上限 270,000"></div>
+<div class="form-group"><label>你的綜合所得稅適用最高稅率</label>
+<select id="taxRate">
+<option value="0.05">5%</option>
+<option value="0.12" selected>12%</option>
+<option value="0.20">20%</option>
+<option value="0.30">30%</option>
+<option value="0.40">40%</option>
+</select></div>
+<button class="btn btn-primary" onclick="calc()" style="width:100%">計算抵稅金額</button>
+
+<div class="result-box" id="result" style="display:none">
+<h3>計算結果</h3>
+<div id="resultContent"></div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:#fff3e0;border-radius:8px;font-size:.85rem;color:#6b7280">
+<strong>計算公式：</strong><br>
+全年房貸利息 = 房貸餘額 × 年利率<br>
+可扣除金額 = min(全年利息 - 儲蓄投資扣除額, 300,000)<br>
+實際節稅 = 可扣除金額 × 適用稅率<br><br>
+<strong>注意事項：</strong><br>
+• 房屋必須是自住且有設籍<br>
+• 每一申報戶限一屋<br>
+• 房貸須以購屋為目的（非增貸、轉貸部分不適用）<br>
+• 列舉扣除額需大於標準扣除額才划算
+</div>
+
+<div class="cta-box">
+<h3>🏠 也算算每月房貸？</h3>
+<p>用房貸試算器計算每月還款金額和總利息。</p>
+<a href="/mortgage.html" class="btn btn-accent">前往房貸試算 →</a>
+</div>
+</div>
+
+<footer class="site-footer"><p>© 2025 FinTools.tw ｜ 專為台灣投資人打造的免費理財工具</p></footer>
+
+<script>
+function calc(){
+  const balance=parseFloat(document.getElementById('loanBalance').value);
+  const rate=parseFloat(document.getElementById('rate').value);
+  if(!balance||!rate){alert('請輸入房貸餘額和利率');return}
+  
+  const savingDeduct=Math.min(270000, parseFloat(document.getElementById('savingDeduct').value)||0);
+  const taxRate=parseFloat(document.getElementById('taxRate').value);
+
+  const annualInterest=Math.round(balance*rate/100);
+  const deductible=Math.max(0, annualInterest-savingDeduct);
+  const finalDeduct=Math.min(deductible, 300000);
+  const taxSaved=Math.round(finalDeduct*taxRate);
+  const monthlyEffect=Math.round(taxSaved/12);
+
+  // 比較標準扣除額
+  const stdSingle=131000, stdMarried=262000;
+
+  const fmt=v=>Math.round(v).toLocaleString('zh-TW');
+
+  document.getElementById('resultContent').innerHTML=`
+    <div class="result-item"><span class="label">全年房貸利息</span><span class="value">NT$ ${fmt(annualInterest)}</span></div>
+    <div class="result-item"><span class="label">扣除儲蓄投資扣除額</span><span class="value">-NT$ ${fmt(savingDeduct)}</span></div>
+    <div class="result-item"><span class="label">可列舉扣除金額</span><span class="value" style="color:#1a73e8;font-size:1.1rem">NT$ ${fmt(finalDeduct)}</span></div>
+    ${finalDeduct>=300000?'<div style="color:#e65100;font-size:.85rem;padding:4px 0">⚠️ 已達上限 30 萬元</div>':''}
+    <div style="border-top:2px solid #c8e6c9;margin:12px 0;padding-top:12px"></div>
+    <div class="result-item"><span class="label">💰 實際節稅金額（稅率 ${taxRate*100}%）</span><span class="value" style="color:#2e7d32;font-size:1.15rem">NT$ ${fmt(taxSaved)}</span></div>
+    <div class="result-item"><span class="label">等於每月省</span><span class="value">NT$ ${fmt(monthlyEffect)}</span></div>
+    <div style="border-top:2px solid #c8e6c9;margin:12px 0;padding-top:12px"></div>
+    <div style="font-size:.88rem;color:#6b7280">
+      📌 提醒：列舉扣除額需 > 標準扣除額才划算<br>
+      單身標準扣除額：NT$ ${fmt(stdSingle)}｜夫妻：NT$ ${fmt(stdMarried)}<br>
+      光是房貸利息 NT$ ${fmt(finalDeduct)} ${finalDeduct>stdSingle?'已超過單身標準扣除額 ✅':'尚未超過單身標準扣除額，需搭配其他列舉項目'}
+    </div>
+  `;
+  document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>

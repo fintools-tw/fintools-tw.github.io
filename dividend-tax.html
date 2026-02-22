@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>股利所得稅比較器 2025 - 合併 vs 分開計稅 - FinTools 台灣</title>
+<meta name="description" content="股利所得稅合併計稅 vs 分開計稅（28%），哪種比較划算？輸入所得與股利金額，立即比較節稅方案。">
+<meta name="keywords" content="股利所得稅,合併計稅,分開計稅,28%,8.5%抵減,股利報稅,2025,台灣">
+<meta property="og:title" content="股利所得稅比較器 2025 - FinTools 台灣">
+<meta property="og:description" content="合併計稅 vs 分開計稅 28%，一鍵比較哪個省稅。">
+<link rel="canonical" href="https://fintools-tw.github.io/dividend-tax.html">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a href="/" class="logo">Fin<span>Tools</span>.tw</a><nav><a href="/dividend.html">殖利率</a><a href="/dca.html">定期定額</a><a href="/mortgage.html">房貸</a><a href="/tax.html">所得稅</a><a href="/blog/">部落格</a></nav></div></header>
+
+<div class="tool-page">
+<h1>📊 股利所得稅比較器 2025</h1>
+<p class="desc">股利要「合併計稅」還是「分開計稅 28%」？輸入你的所得資料，立即比較哪種方式省更多稅。</p>
+
+<div style="background:#e3f2fd;border-radius:8px;padding:16px;margin-bottom:24px;font-size:.9rem">
+  <strong>📌 兩種計稅方式：</strong><br>
+  <b>合併計稅：</b>股利併入綜合所得，可抵減稅額 = 股利 × 8.5%（上限 8 萬元）<br>
+  <b>分開計稅：</b>股利不併入綜合所得，單獨以 28% 稅率計算
+</div>
+
+<div class="form-group"><label>綜合所得總額（不含股利）（元）</label><input type="number" id="income" placeholder="例：800000"></div>
+<div class="form-group"><label>股利所得總額（元）</label><input type="number" id="dividend" placeholder="例：200000"></div>
+<div class="form-group"><label>申報方式</label>
+<select id="filing"><option value="single">單身</option><option value="married">夫妻合併</option></select></div>
+<div class="form-group"><label>受扶養人數（不含本人/配偶）</label><input type="number" id="dependents" value="0" min="0"></div>
+<div class="form-group"><label>扣除方式</label>
+<select id="deductType"><option value="standard">標準扣除額</option><option value="itemized">列舉扣除額</option></select></div>
+<div class="form-group" id="itemizedGroup" style="display:none"><label>列舉扣除額合計（元）</label><input type="number" id="itemized" placeholder="例：300000"></div>
+<div class="form-group"><label>薪資所得人數</label>
+<select id="salaryPersons"><option value="1">1人</option><option value="2">2人（夫妻皆有薪資）</option><option value="0">0人（無薪資所得）</option></select></div>
+<button class="btn btn-primary" onclick="calc()" style="width:100%">比較計稅方式</button>
+
+<div class="result-box" id="result" style="display:none">
+<h3>比較結果</h3>
+<div id="resultContent"></div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:#fff3e0;border-radius:8px;font-size:.85rem;color:#6b7280">
+<strong>計算公式說明：</strong><br>
+<b>合併計稅：</b>（所得+股利-免稅額-扣除額）× 累進稅率 - 累進差額 - 股利抵減（8.5%，上限8萬）<br>
+<b>分開計稅：</b>（所得-免稅額-扣除額）× 累進稅率 - 累進差額 + 股利 × 28%<br>
+稅率級距：5%/12%/20%/30%/40%（同綜合所得稅）
+</div>
+
+<div class="cta-box">
+<h3>🧾 完整報稅試算</h3>
+<p>搭配綜合所得稅試算器，全面掌握報稅金額。</p>
+<a href="/tax.html" class="btn btn-accent">前往所得稅試算 →</a>
+</div>
+</div>
+
+<footer class="site-footer"><p>© 2025 FinTools.tw ｜ 專為台灣投資人打造的免費理財工具</p></footer>
+
+<script>
+document.getElementById('deductType').addEventListener('change',function(){
+  document.getElementById('itemizedGroup').style.display=this.value==='itemized'?'block':'none';
+});
+
+const brackets=[
+  {limit:590000,rate:0.05,cumDeduct:0},
+  {limit:1330000,rate:0.12,cumDeduct:41300},
+  {limit:2660000,rate:0.20,cumDeduct:147700},
+  {limit:4980000,rate:0.30,cumDeduct:413700},
+  {limit:Infinity,rate:0.40,cumDeduct:911700}
+];
+
+function calcProgressiveTax(taxableIncome){
+  if(taxableIncome<=0) return 0;
+  for(const b of brackets){
+    if(taxableIncome<=b.limit) return Math.max(0,taxableIncome*b.rate-b.cumDeduct);
+  }
+  return 0;
+}
+
+function calc(){
+  const income=parseFloat(document.getElementById('income').value);
+  const dividend=parseFloat(document.getElementById('dividend').value);
+  if(!income&&!dividend){alert('請輸入所得或股利金額');return}
+  const inc=income||0, div=dividend||0;
+  
+  const filing=document.getElementById('filing').value;
+  const dep=parseInt(document.getElementById('dependents').value)||0;
+  const deductType=document.getElementById('deductType').value;
+  const salaryPersons=parseInt(document.getElementById('salaryPersons').value);
+
+  const exemption=97000;
+  const stdSingle=131000, stdMarried=262000;
+  const salaryDeduct=218000;
+
+  let persons=filing==='married'?2:1;
+  persons+=dep;
+  const totalExemption=exemption*persons;
+  
+  let deduction=deductType==='standard'?(filing==='married'?stdMarried:stdSingle):(parseFloat(document.getElementById('itemized').value)||0);
+  const salaryDed=salaryPersons*salaryDeduct;
+
+  // 方案A：合併計稅
+  const taxableA=Math.max(0, inc+div-totalExemption-deduction-salaryDed);
+  const taxA_raw=calcProgressiveTax(taxableA);
+  const dividendCredit=Math.min(div*0.085, 80000);
+  const taxA=Math.max(0, Math.round(taxA_raw-dividendCredit));
+
+  // 方案B：分開計稅
+  const taxableB=Math.max(0, inc-totalExemption-deduction-salaryDed);
+  const taxB_progressive=calcProgressiveTax(taxableB);
+  const taxB_dividend=Math.round(div*0.28);
+  const taxB=Math.round(taxB_progressive)+taxB_dividend;
+
+  const better=taxA<=taxB?'A':'B';
+  const saved=Math.abs(taxA-taxB);
+
+  const fmt=v=>Math.round(v).toLocaleString('zh-TW');
+
+  document.getElementById('resultContent').innerHTML=`
+    <div style="background:${better==='A'?'#e8f5e9':'#fff3e0'};border-radius:8px;padding:16px;margin-bottom:16px;text-align:center">
+      <div style="font-size:1.3rem;font-weight:700;color:${better==='A'?'#2e7d32':'#e65100'}">
+        ✅ 建議選擇「${better==='A'?'合併計稅':'分開計稅 28%'}」
+      </div>
+      <div style="font-size:.95rem;margin-top:4px">可省下 <b>NT$ ${fmt(saved)}</b></div>
+    </div>
+    <div class="result-item"><span class="label">合併計稅 應繳稅額</span><span class="value" style="${better==='A'?'color:#2e7d32':''}">NT$ ${fmt(taxA)}</span></div>
+    <div class="result-item"><span class="label">　股利抵減額（8.5%）</span><span class="value">-NT$ ${fmt(dividendCredit)}</span></div>
+    <div class="result-item"><span class="label">分開計稅 應繳稅額</span><span class="value" style="${better==='B'?'color:#2e7d32':''}">NT$ ${fmt(taxB)}</span></div>
+    <div class="result-item"><span class="label">　股利稅（28%）</span><span class="value">NT$ ${fmt(taxB_dividend)}</span></div>
+    <div class="result-item"><span class="label">　其他所得稅</span><span class="value">NT$ ${fmt(Math.round(taxB_progressive))}</span></div>
+    <div style="border-top:2px solid #c8e6c9;margin:12px 0;padding-top:12px"></div>
+    <div class="result-item"><span class="label">差額</span><span class="value" style="color:#d32f2f;font-size:1.1rem">NT$ ${fmt(saved)}</span></div>
+  `;
+  document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>
