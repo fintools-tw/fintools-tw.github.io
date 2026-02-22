@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://fintools-tw.github.io/</loc><priority>1.0</priority></url>
+  <url><loc>https://fintools-tw.github.io/tax.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fintools-tw.github.io/dca.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fintools-tw.github.io/dividend.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fintools-tw.github.io/mortgage.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fintools-tw.github.io/blog/index.html</loc><priority>0.7</priority></url>
+  <url><loc>https://fintools-tw.github.io/blog/dca-investment-guide.html</loc><priority>0.6</priority></url>
+  <url><loc>https://fintools-tw.github.io/blog/2025-tax-guide.html</loc><priority>0.6</priority></url>
+  <url><loc>https://fintools-tw.github.io/blog/dividend-yield-guide.html</loc><priority>0.6</priority></url>
+</urlset>
