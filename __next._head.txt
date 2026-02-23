@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[30852,["/_next/static/chunks/c7ec46ac1685aa8a.js"],"ViewportBoundary"]
+3:I[30852,["/_next/static/chunks/c7ec46ac1685aa8a.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+5:I[85211,["/_next/static/chunks/c7ec46ac1685aa8a.js"],"IconMark"]
+0:{"buildId":"RPA0TaJUP8dpzUCr0ng58","rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"FinTools Pro — AI 智慧報稅試算"}],["$","meta","1",{"name":"description","content":"報稅不再頭痛，AI 幫你找到最省稅方案。完整 2025 年度綜合所得稅試算、夫妻申報比較、股利節稅分析。"}],["$","link","2",{"rel":"icon","href":"/favicon.ico?favicon.0b3bf435.ico","sizes":"256x256","type":"image/x-icon"}],["$","$L5","3",{}]]}]}]}],null]}],"loading":null,"isPartial":false}
