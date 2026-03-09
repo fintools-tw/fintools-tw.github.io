@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>股息殖利率計算器 | FinTools Pro</title>
+<meta name="description" content="免費股息殖利率計算器：輸入股價、現金股利、股票股利，即時算出殖利率與持有N年累積報酬。"/>
+<link rel="icon" href="/favicon.ico" sizes="256x256" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased min-h-screen">
+<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-200">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold text-indigo-600">💰 FinTools Pro</a>
+    <div class="flex items-center gap-6 text-sm">
+      <a href="/tools/" class="text-indigo-600 font-semibold">工具</a>
+      <a href="/blog/" class="hover:text-indigo-600 transition">文章</a>
+    </div>
+  </div>
+</nav>
+<main class="max-w-2xl mx-auto px-4 py-12">
+  <a href="/tools/" class="text-indigo-600 text-sm hover:underline">← 返回工具列表</a>
+  <h1 class="text-3xl font-extrabold mt-4 mb-2">💹 股息殖利率計算器</h1>
+  <p class="text-gray-500 mb-8">輸入股價與股利資訊，即時計算殖利率與長期持有報酬</p>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div>
+      <label class="block text-sm font-semibold mb-1">股價（元）</label>
+      <input id="price" type="number" min="0" step="0.01" placeholder="例如：50" class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 outline-none"/>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold mb-1">現金股利（元）</label>
+        <input id="cashDiv" type="number" min="0" step="0.01" placeholder="例如：2.5" class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 outline-none"/>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1">股票股利（元）</label>
+        <input id="stockDiv" type="number" min="0" step="0.01" placeholder="例如：0.5" class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 outline-none"/>
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-semibold mb-1">持有年數（累積報酬試算）</label>
+      <input id="years" type="number" min="1" max="50" value="5" class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 outline-none"/>
+    </div>
+    <button onclick="calc()" class="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl text-lg hover:bg-indigo-700 transition">計算</button>
+  </div>
+
+  <div id="result" class="hidden mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+    <h2 class="text-xl font-bold mb-4">📊 計算結果</h2>
+    <div class="grid grid-cols-3 gap-4 mb-6">
+      <div class="bg-indigo-50 rounded-xl p-4 text-center">
+        <div class="text-sm text-gray-500">現金殖利率</div>
+        <div id="cashYield" class="text-2xl font-bold text-indigo-600 mt-1">—</div>
+      </div>
+      <div class="bg-purple-50 rounded-xl p-4 text-center">
+        <div class="text-sm text-gray-500">股票殖利率</div>
+        <div id="stockYield" class="text-2xl font-bold text-purple-600 mt-1">—</div>
+      </div>
+      <div class="bg-green-50 rounded-xl p-4 text-center">
+        <div class="text-sm text-gray-500">合計殖利率</div>
+        <div id="totalYield" class="text-2xl font-bold text-green-600 mt-1">—</div>
+      </div>
+    </div>
+    <div class="mb-4">
+      <div class="text-sm text-gray-500 mb-1">股票股利換算（每千股配股數）</div>
+      <div id="stockShares" class="font-semibold">—</div>
+    </div>
+    <h3 class="font-bold mb-3">📈 持有 <span id="yrsLabel">5</span> 年累積報酬試算</h3>
+    <p class="text-xs text-gray-400 mb-3">假設每年股利不變，現金股利再投入，股價不變</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr class="border-b border-gray-200 text-gray-500"><th class="py-2 text-left">年度</th><th class="py-2 text-right">持有股數</th><th class="py-2 text-right">現金股利</th><th class="py-2 text-right">累積報酬率</th></tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer class="bg-gray-900 text-gray-400 py-8 mt-20">
+  <div class="max-w-6xl mx-auto px-4 text-center text-sm">© 2025 FinTools Pro. All rights reserved.</div>
+</footer>
+
+<script>
+function calc(){
+  const price=parseFloat(document.getElementById('price').value);
+  const cashDiv=parseFloat(document.getElementById('cashDiv').value)||0;
+  const stockDiv=parseFloat(document.getElementById('stockDiv').value)||0;
+  const years=parseInt(document.getElementById('years').value)||5;
+  if(!price||price<=0){alert('請輸入有效股價');return;}
+
+  const cashY=cashDiv/price*100;
+  const stockShares=stockDiv/10*100; // 每千股配股數
+  const stockValue=stockDiv/10*price; // 股票股利價值（每股）
+  const stockY=stockValue/price*100;
+  const totalY=cashY+stockY;
+
+  document.getElementById('cashYield').textContent=cashY.toFixed(2)+'%';
+  document.getElementById('stockYield').textContent=stockY.toFixed(2)+'%';
+  document.getElementById('totalYield').textContent=totalY.toFixed(2)+'%';
+  document.getElementById('stockShares').textContent=`每張(1000股)配 ${(stockDiv/10*1000).toFixed(0)} 股，市值約 $${(stockDiv/10*1000*price).toFixed(0)}`;
+  document.getElementById('yrsLabel').textContent=years;
+
+  // compound simulation: start with 1000 shares
+  let shares=1000;
+  const initValue=shares*price;
+  let totalCashReceived=0;
+  let html='';
+  for(let y=1;y<=years;y++){
+    const cash=shares*cashDiv;
+    const newShares=shares*(stockDiv/10);
+    const reinvestShares=cash/price;
+    totalCashReceived+=cash;
+    shares+=newShares+reinvestShares;
+    const currentValue=shares*price;
+    const returnRate=(currentValue-initValue+totalCashReceived)/initValue*100;
+    // simplified: count total value = shares*price (cash already reinvested)
+    const simpleReturn=((shares*price)/initValue-1)*100;
+    html+=`<tr class="border-b border-gray-50"><td class="py-2">第${y}年</td><td class="py-2 text-right">${shares.toFixed(1)}</td><td class="py-2 text-right">$${cash.toFixed(0)}</td><td class="py-2 text-right font-semibold text-green-600">+${simpleReturn.toFixed(2)}%</td></tr>`;
+  }
+  document.getElementById('tableBody').innerHTML=html;
+  document.getElementById('result').classList.remove('hidden');
+}
+// auto-calc on enter
+document.querySelectorAll('input').forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+</script>
+</body>
+</html>
